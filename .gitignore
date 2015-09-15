@@ -1,4 +1,5 @@
 .vagrant/
 log/
-.idea/
-*.iml
+data
+!data/jenkins-data/plugins/greenballs.jpi
+!data/jenkins-data/config.xml

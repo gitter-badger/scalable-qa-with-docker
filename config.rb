@@ -1,10 +1,13 @@
 # Size of the CoreOS cluster created by Vagrant
-$num_instances=2
+$num_instances=3
 
 # coreos-vagrant is configured through a series of configuration
 # options (global ruby variables) which are detailed below. To modify
-# these options simply uncomment the necessary lines, leaving the $, 
+# these options simply uncomment the necessary lines, leaving the $,
 # and replace everything after the equals sign..
+
+# Docker registry IP
+$ip_docker_registry="172.17.8.128"
 
 # Used to fetch a new discovery token for a cluster of size $num_instances
 $new_discovery_url="https://discovery.etcd.io/new?size=#{$num_instances}"
@@ -13,26 +16,23 @@ $new_discovery_url="https://discovery.etcd.io/new?size=#{$num_instances}"
 # the lines below:
 
 # TODO automatically replace token in ```*.user-data``` file
-if File.exists?('user-data') && ARGV[0].eql?('up')
+Dir.glob('*.user-data').each do |f|
+if File.exists?(f) && ARGV[0].eql?('up')
  require 'open-uri'
  require 'yaml'
 
  token = open($new_discovery_url).read
 
- data = YAML.load(IO.readlines('user-data')[1..-1].join)
- if data['coreos'].key? 'etcd'
-   data['coreos']['etcd']['discovery'] = token
- end
- if data['coreos'].key? 'etcd2'
-   data['coreos']['etcd2']['discovery'] = token
- end
+ data = YAML.load(IO.readlines(f)[1..-1].join)
+ data['coreos']['etcd2']['discovery'] = token
 
  yaml = YAML.dump(data)
- File.open('user-data', 'w') { |file| file.write("#cloud-config\n\n#{yaml}") }
+ File.open(f, 'w') { |file| file.write("#cloud-config\n\n#{yaml}") }
+end
 end
 
 # Change the version of CoreOS to be installed
-# To deploy a specific version, simply set $image_version accordingly. 
+# To deploy a specific version, simply set $image_version accordingly.
 # For example, to deploy version 709.0.0, set $image_version="709.0.0".
 # The default value is "current", which points to the current version
 # of the selected channel
@@ -58,13 +58,6 @@ $expose_docker_tcp=2375
 $vb_gui = false
 $vb_memory = 2048
 $vb_cpus = 2
-
-# Share additional folders to the CoreOS VMs
-# For example,
-# $shared_folders = {'/path/on/host' => '/path/on/guest', '/home/foo/app' => '/app'}
-# or, to map host folders to guest folders of the same name,
-# $shared_folders = Hash[*['/home/foo/app1', '/home/foo/app2'].map{|d| [d, d]}.flatten]
-$shared_folders = {'jenkins-data' => '/jenkins-data'}
 
 # Enable port forwarding from guest(s) to host machine, syntax is: { 80 => 8080 }, auto correction is enabled by default.
 $forwarded_ports = {}
