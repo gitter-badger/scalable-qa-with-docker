@@ -33,7 +33,6 @@ _Once a sevice is started below links will point to your local instance of the r
 ### core-01
 
 - docker.service
-- docker-registry.service - URL: [Docker Registry](http://172.17.8.101:5000)
 - gitbucket.service - URL: [GitBucket](http://172.17.8.101:8282) (login:root-root)
 - jenkins.service - URL: [Jenkins](http://172.17.8.101:8888)
 
