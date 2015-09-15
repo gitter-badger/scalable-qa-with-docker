@@ -40,23 +40,9 @@ Vagrant.configure("2") do |config|
     config.vm.define vm_name = "core-%02d" % i do |config|
       config.vm.hostname = vm_name
 
-      if $enable_serial_logging
-        logdir = File.join(File.dirname(__FILE__), "log")
-        FileUtils.mkdir_p(logdir)
-
-        serialFile = File.join(logdir, "%s-serial.txt" % vm_name)
-        FileUtils.touch(serialFile)
-
-        config.vm.provider :virtualbox do |vb, override|
-          vb.customize ["modifyvm", :id, "--uart1", "0x3F8", "4"]
-          vb.customize ["modifyvm", :id, "--uartmode1", serialFile]
-        end
-      end
-
       if $expose_docker_tcp
         config.vm.network "forwarded_port", guest: 2375, host: ($expose_docker_tcp + i - 1), auto_correct: true
       end
-
 
       $forwarded_ports.each do |guest, host|
         config.vm.network "forwarded_port", guest: guest, host: host, auto_correct: true

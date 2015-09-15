@@ -29,6 +29,13 @@ coreos:
 
       [Install]
       WantedBy=sockets.target
+  - name: docker.service
+    drop-ins:
+    - name: 50-insecure-registry.conf
+      content: |
+        [Service]
+        Environment='DOCKER_OPTS=--insecure-registry="docker-registry:5000"'
+    command: start
   - name: gitbucket.service
     command: start
     enable: true
