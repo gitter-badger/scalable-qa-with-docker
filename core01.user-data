@@ -3,97 +3,69 @@
 ---
 coreos:
   etcd2:
-    # generate a new token for each unique cluster from https://discovery.etcd.io/new
-    # WARNING: replace each time you 'vagrant destroy'
-    discovery: https://discovery.etcd.io/2c2b79910149efb1df99274a47180716
-    # multi-region and multi-cloud deployments need to use $public_ipv4
+    discovery: https://discovery.etcd.io/7ad1e6486aaa0c172b4f7036007635b7
     advertise-client-urls: http://$private_ipv4:2379,http://$private_ipv4:4001
     initial-advertise-peer-urls: http://$private_ipv4:2380
-    # listen on both the official ports and the legacy ports
-    # legacy ports can be omitted if your application doesn't depend on them
     listen-client-urls: http://0.0.0.0:2379,http://0.0.0.0:4001
     listen-peer-urls: http://$private_ipv4:2380
   fleet:
     public-ip: $public_ipv4
   units:
-    - name: etcd2.service
-      command: start
-    - name: fleet.service
-      command: start
-    - name: docker-tcp.socket
-      command: start
-      enable: true
-      content: |
-        [Unit]
-        Description=Docker Socket for the API
+  - name: etcd2.service
+    command: start
+  - name: fleet.service
+    command: start
+  - name: docker-tcp.socket
+    command: start
+    enable: true
+    content: |
+      [Unit]
+      Description=Docker Socket for the API
 
-        [Socket]
-        ListenStream=2375
-        Service=docker.service
-        BindIPv6Only=both
+      [Socket]
+      ListenStream=2375
+      Service=docker.service
+      BindIPv6Only=both
 
-        [Install]
-        WantedBy=sockets.target
-    - name: docker-registry.service
-      command: start
-      enable: true
-      content: |
-        [Unit]
-        Description=Docker Registry
-        After=docker.service
-        Requires=docker.service
+      [Install]
+      WantedBy=sockets.target
+  - name: gitbucket.service
+    command: start
+    enable: true
+    content: |
+      [Unit]
+      Description=Docker GitBucket - a github clone
+      After=docker.service
+      Requires=docker.service
 
-        [Service]
-        TimeoutStartSec=0
-        ExecStartPre=-/usr/bin/docker kill registry
-        ExecStartPre=-/usr/bin/docker rm registry
-        ExecStartPre=-/usr/bin/mkdir -p /home/core/registry
-        ExecStart=/usr/bin/docker run \
-                         -e STORAGE_PATH=/registry \
-                         -e SEARCH_BACKEND=sqlalchemy \
-                         -e GUNICORN_OPTS=[--preload] \
-                         -v /home/core/registry:/registry \
-                         -p 5000:5000 \
-                         --name="registry" \
-                         registry
-        ExecStop=/usr/bin/docker stop registry
-    - name: gitbucket.service
-      command: start
-      enable: true
-      content: |
-        [Unit]
-        Description=Docker GitBucket - a github clone
-        After=docker.service
-        Requires=docker.service
+      [Service]
+      TimeoutStartSec=0
+      ExecStartPre=-/usr/bin/docker kill git-gitbucket
+      ExecStartPre=-/usr/bin/docker rm git-gitbucket
+      ExecStart=/usr/bin/docker run \
+                       -v /gitbucket-data:/gitbucket \
+                       -p 29418:29418 \
+                       -p 8282:8080 \
+                       --name="git-gitbucket" \
+                       docker-registry:5000/gitbucket
+      ExecStop=/usr/bin/docker stop git-gitbucket
+  - name: jenkins.service
+    command: start
+    enable: true
+    content: |
+      [Unit]
+      Description=Jenkins
+      After=docker.service
+      Requires=docker.service
+      Requires=jenkins\x2ddata.mount
 
-        [Service]
-        TimeoutStartSec=0
-        ExecStartPre=-/usr/bin/docker kill git-gitbucket
-        ExecStartPre=-/usr/bin/docker rm git-gitbucket
-        ExecStart=/usr/bin/docker run \
-                         -v /gitbucket-data:/gitbucket \
-                         -p 29418:29418 \
-                         -p 8282:8080 \
-                         --name="git-gitbucket" \
-                         f99aq8ove/gitbucket
-        ExecStop=/usr/bin/docker stop git-gitbucket
-    - name: jenkins.service
-      command: start
-      enable: true
-      content: |
-        [Unit]
-        Description=Jenkins
-        After=docker.service
-        Requires=docker.service
-        Requires=jenkins\x2ddata.mount
-
-        [Service]
-        TimeoutStartSec=0
-        ExecStartPre=-/usr/bin/docker kill ci-jenkins
-        ExecStartPre=-/usr/bin/docker rm ci-jenkins
-        ExecStart=/usr/bin/docker run \
-                         -p 8888:8080 \
-                         -v /jenkins-data:/var/jenkins_home \
-                         --name="ci-jenkins" \
-                         jenkins
-        ExecStop=/usr/bin/docker stop ci-jenkins
+      [Service]
+      TimeoutStartSec=0
+      ExecStartPre=-/usr/bin/docker kill ci-jenkins
+      ExecStartPre=-/usr/bin/docker rm ci-jenkins
+      ExecStart=/usr/bin/docker run \
+                       -p 8888:8080 \
+                       -v /jenkins-data:/var/jenkins_home \
+                       --name="ci-jenkins" \
+                       docker-registry:5000/jenkins
+      ExecStop=/usr/bin/docker stop ci-jenkins

@@ -78,9 +78,9 @@ Vagrant.configure("2") do |config|
 
 
       if i == 1
+        config.vm.synced_folder "data/jenkins-data/", "/jenkins-data", id: "core-share", nfs: true, mount_options: ['nolock,vers=3,udp']
         config.vm.provision :file, :source => "#{CLOUD_CONFIG_CORE01_PATH}", :destination => "/tmp/vagrantfile-user-data"
       elsif i == 2
-        config.vm.synced_folder "data/jenkins-data/", "/jenkins-data", id: "core-share", nfs: true, mount_options: ['nolock,vers=3,udp']
         config.vm.provision :file, :source => "#{CLOUD_CONFIG_CORE02_PATH}", :destination => "/tmp/vagrantfile-user-data"
       else
         config.vm.provision :file, :source => "#{CLOUD_CONFIG_CORE03_PATH}", :destination => "/tmp/vagrantfile-user-data"
