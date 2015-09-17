@@ -22,7 +22,7 @@ Vagrant.configure("2") do |config|
   config.ssh.insert_key = false
 
   config.vm.box = "coreos_766.3.0.box"
-  config.vm.box_url = "http://%s/downloads/coreos_766.3.0.box" % $ip_docker_registry
+  config.vm.box_url = "http://%s/coreos_766.3.0.box" % $ip_docker_registry
 
   config.vm.provider :virtualbox do |v|
     # On VirtualBox, we don't have guest additions or a functional vboxsf
