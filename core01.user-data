@@ -52,7 +52,7 @@ coreos:
       ExecStart=/usr/bin/docker run \
                        -v /gitbucket-data:/gitbucket \
                        -p 29418:29418 \
-                       -p 8282:8080 \
+                       -p 8080:8080 \
                        --name="git-gitbucket" \
                        docker-registry:5000/gitbucket
       ExecStop=/usr/bin/docker stop git-gitbucket
@@ -71,7 +71,7 @@ coreos:
       ExecStartPre=-/usr/bin/docker kill ci-jenkins
       ExecStartPre=-/usr/bin/docker rm ci-jenkins
       ExecStart=/usr/bin/docker run \
-                       -p 8888:8080 \
+                       -p 8181:8080 \
                        -v /jenkins-data:/var/jenkins_home \
                        --name="ci-jenkins" \
                        docker-registry:5000/jenkins
@@ -90,7 +90,53 @@ coreos:
       ExecStartPre=-/usr/bin/docker kill petclinic
       ExecStartPre=-/usr/bin/docker rm petclinic
       ExecStart=/usr/bin/docker run \
-                       -p 8080:8080 \
+                       -p 8282:8080 \
                        --name="petclinic" \
                        docker-registry:5000/petclinic
       ExecStop=/usr/bin/docker stop petclinic
+  - name: zookeeper.service
+    command: start
+    enable: true
+    content: |
+      [Unit]
+      Description=zookeeper
+      After=docker.service
+      Requires=docker.service
+
+      [Service]
+      TimeoutStartSec=0
+      ExecStartPre=-/usr/bin/docker kill zookeeper
+      ExecStartPre=-/usr/bin/docker rm zookeeper
+      ExecStart=/usr/bin/docker run \
+                        -p 2181:2181 \
+                        -p 2888:2888 \
+                        -p 3888:3888 \
+                        --name="zookeeper" \
+                        garland/zookeeper
+      ExecStop=/usr/bin/docker stop zookeeper
+  - name: mesos-master.service
+    command: start
+    enable: true
+    content: |
+      [Unit]
+      Description=mesos master
+      After=docker.service
+      Requires=docker.service
+
+      [Service]
+      TimeoutStartSec=0
+      ExecStartPre=-/usr/bin/docker kill mesos-master
+      ExecStartPre=-/usr/bin/docker rm mesos-master
+      ExecStart=/usr/bin/docker run --net="host" \
+                        -p 5050:5050 \
+                        -e "MESOS_HOSTNAME=172.17.8.101" \
+                        -e "MESOS_IP=172.17.8.101" \
+                        -e "MESOS_ZK=zk://172.17.8.101:2181/mesos" \
+                        -e "MESOS_PORT=5050" \
+                        -e "MESOS_LOG_DIR=/var/log/mesos" \
+                        -e "MESOS_QUORUM=1" \
+                        -e "MESOS_REGISTRY=in_memory" \
+                        -e "MESOS_WORK_DIR=/var/lib/mesos" \
+                        --name="mesos-master" \
+                        garland/mesosphere-docker-mesos-master
+      ExecStop=/usr/bin/docker stop mesos-master
