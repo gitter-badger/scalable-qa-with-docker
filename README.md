@@ -12,7 +12,7 @@ Given:
     $ git clone https://github.com/xebia/scalable-qa-with-docker.git
     $ cd scalable-qa-with-docker
 
-Download https://goo.gl/6tOv2V and unzip, place in root of project.
+Download https://goo.gl/bmZhor and unzip, place in root of project.
 
 When:
 
