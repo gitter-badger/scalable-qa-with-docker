@@ -12,6 +12,8 @@ Given:
     $ git clone https://github.com/xebia/scalable-qa-with-docker.git
     $ cd scalable-qa-with-docker
 
+Download https://goo.gl/s8iIcT and unzip, place in root of project.
+
 When:
 
     $ vagrant up
