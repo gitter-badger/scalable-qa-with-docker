@@ -1,5 +1,3 @@
 .vagrant/
 log/
 data
-!data/jenkins-data/plugins/greenballs.jpi
-!data/jenkins-data/config.xml

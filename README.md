@@ -5,6 +5,7 @@ Current set up allocats 6 CPU and 6 GB of memory._
 
 Prerequisites
 
+- Download [data.zip](https://goo.gl/bmZhor) and unzip, place in root of project
 - [Vagrant](https://www.vagrantup.com/) + [VirtualBox](https://www.virtualbox.org/)
 
 Given:
