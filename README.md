@@ -35,10 +35,10 @@ _Once a sevice is started below links will point to your local instance of the r
 - docker.service
 - gitbucket.service - URL: [GitBucket](http://172.17.8.101:8080) (login:root-root)
 - jenkins.service - URL: [Jenkins](http://172.17.8.101:8181)
-- petclinic.service - URL: [Petclinic](http://172.17.8.101:8282)
+- petclinic.service - URL: [Petclinic](http://172.17.8.101:8282/petclinic)
 - mesos-master.service - URL: [Mesos Master](http://172.17.8.101:5050)
-- docker-registry.service - URL: [Docker Registry](http://172.17.8.101:5000)
-- Selenium Hub.service - URL: [Selenium Hub](http://172.17.8.101:4444)
+- docker-registry.service - URL: [Docker Registry](http://172.17.8.101:5000/v2/_catalog)
+- Selenium Hub.service - URL: [Selenium Hub](http://172.17.8.101:4444/grid/console)
 
 ### core-02
 
