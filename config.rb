@@ -10,7 +10,7 @@ $num_instances=3
 # and replace everything after the equals sign..
 
 # Docker registry IP
-$ip_docker_registry="172.17.8.128"
+$ip_docker_registry="172.17.8.101"
 
 # Used to fetch a new discovery token for a cluster of size $num_instances
 $new_discovery_url="https://discovery.etcd.io/new?size=#{$num_instances}"
