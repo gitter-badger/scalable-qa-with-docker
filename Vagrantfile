@@ -22,7 +22,7 @@ Vagrant.configure("2") do |config|
   config.ssh.insert_key = false
 
   config.vm.box = "coreos_766.3.0.box"
-  config.vm.box_url = "data/vagrant/coreos_766.3.0.box" % $ip_docker_registry
+  config.vm.box_url = "data/vagrant/coreos_766.3.0.box"
 
   config.vm.provider :virtualbox do |v|
     # On VirtualBox, we don't have guest additions or a functional vboxsf
@@ -64,8 +64,9 @@ Vagrant.configure("2") do |config|
 
 
       if i == 1
-        config.vm.synced_folder "data/registry", "/registry", id: "core-registry", nfs: true, mount_options: ['nolock,vers=3,udp']
-        config.vm.synced_folder "data/jenkins-data/", "/jenkins-data", id: "core-share", nfs: true, mount_options: ['nolock,vers=3,udp']
+        config.vm.synced_folder "data/gitbucket/", "/gitbucket", id: "share-gitbucket", nfs: true, mount_options: ['nolock,vers=3,udp']
+        config.vm.synced_folder "data/registry/", "/registry", id: "share-registry", nfs: true, mount_options: ['nolock,vers=3,udp']
+        config.vm.synced_folder "data/jenkins/", "/jenkins", id: "share-jenkins", nfs: true, mount_options: ['nolock,vers=3,udp']
         config.vm.provision :file, :source => "#{CLOUD_CONFIG_CORE01_PATH}", :destination => "/tmp/vagrantfile-user-data"
       elsif i == 2
         config.vm.provision :file, :source => "#{CLOUD_CONFIG_CORE02_PATH}", :destination => "/tmp/vagrantfile-user-data"

@@ -3,7 +3,7 @@
 ---
 coreos:
   etcd2:
-    discovery: https://discovery.etcd.io/48f01f91a3dbb3ed55700adc6d259d8a
+    discovery: https://discovery.etcd.io/eefb40a47f0d2d5f5f5e519c066224b2
     advertise-client-urls: http://$private_ipv4:2379,http://$private_ipv4:4001
     initial-advertise-peer-urls: http://$private_ipv4:2380
     listen-client-urls: http://0.0.0.0:2379,http://0.0.0.0:4001
@@ -67,11 +67,13 @@ coreos:
       Description=Docker GitBucket - a github clone
       After=docker.service docker-registry.service
       Requires=docker.service docker-registry.service
+      Requires=gitbucket.mount
 
       [Service]
       Restart=always
       RestartSec=5
       TimeoutStartSec=0
+      ExecStartPre=-/usr/bin/docker pull docker-registry:5000/gitbucket
       ExecStartPre=-/usr/bin/docker kill git-gitbucket
       ExecStartPre=-/usr/bin/docker rm git-gitbucket
       ExecStart=/usr/bin/docker run \
@@ -89,12 +91,13 @@ coreos:
       Description=Jenkins
       After=docker.service docker-registry.service
       Requires=docker.service docker-registry.service
-      Requires=jenkins\x2ddata.mount
+      Requires=jenkins.mount
 
       [Service]
       Restart=always
       RestartSec=5
       TimeoutStartSec=0
+      ExecStartPre=-/usr/bin/docker pull docker-registry:5000/jenkins
       ExecStartPre=-/usr/bin/docker kill ci-jenkins
       ExecStartPre=-/usr/bin/docker rm ci-jenkins
       ExecStart=/usr/bin/docker run \
@@ -116,6 +119,7 @@ coreos:
       Restart=always
       RestartSec=5
       TimeoutStartSec=0
+      ExecStartPre=-/usr/bin/docker pull docker-registry:5000/petclinic
       ExecStartPre=-/usr/bin/docker kill petclinic
       ExecStartPre=-/usr/bin/docker rm petclinic
       ExecStart=/usr/bin/docker run \
@@ -136,6 +140,7 @@ coreos:
       Restart=always
       RestartSec=5
       TimeoutStartSec=0
+      ExecStartPre=-/usr/bin/docker pull docker-registry:5000/zookeeper
       ExecStartPre=-/usr/bin/docker kill zookeeper
       ExecStartPre=-/usr/bin/docker rm zookeeper
       ExecStart=/usr/bin/docker run \
@@ -158,6 +163,7 @@ coreos:
       Restart=always
       RestartSec=5
       TimeoutStartSec=0
+      ExecStartPre=-/usr/bin/docker pull docker-registry:5000/mesos-master
       ExecStartPre=-/usr/bin/docker kill mesos-master
       ExecStartPre=-/usr/bin/docker rm mesos-master
       ExecStart=/usr/bin/docker run --net="host" \
@@ -173,3 +179,40 @@ coreos:
                         --name="mesos-master" \
                         docker-registry:5000/mesos-master
       ExecStop=/usr/bin/docker stop mesos-master
+  - name: selenium-hub.service
+    command: start
+    enable: true
+    content: |
+      [Unit]
+      Description=Selenium Hub 2.47.1
+      After=docker.service
+      Requires=docker.service
+
+      [Service]
+      TimeoutStartSec=0
+      ExecStartPre=-/usr/bin/docker pull docker-registry:5000/hub:2.47.1
+      ExecStartPre=-/usr/bin/docker kill selenium-hub
+      ExecStartPre=-/usr/bin/docker rm selenium-hub
+      ExecStart=/usr/bin/docker run \
+                       -p 4444:4444 \
+                       --name="selenium-hub" \
+                       docker-registry:5000/hub:2.47.1
+      ExecStop=/usr/bin/docker stop selenium-hub
+  - name: node-chrome.service
+    command: start
+    enable: true
+    content: |
+      [Unit]
+      Description=Selenium Node Chrome 2.47.1
+      After=selenium-hub.service
+
+      [Service]
+      TimeoutStartSec=0
+      ExecStartPre=-/usr/bin/docker pull docker-registry:5000/node-chrome:2.47.1
+      ExecStartPre=-/usr/bin/docker kill node-chrome
+      ExecStartPre=-/usr/bin/docker rm node-chrome
+      ExecStart=/usr/bin/docker run \
+                       --link selenium-hub:hub \
+                       --name="node-chrome" \
+                       docker-registry:5000/node-chrome:2.47.1
+      ExecStop=/usr/bin/docker stop node-chrome
