@@ -3,7 +3,7 @@
 ---
 coreos:
   etcd2:
-    discovery: https://discovery.etcd.io/213c95516a960d50f121de7752db90bd
+    discovery: https://discovery.etcd.io/68f44a23eef0ddcdceab6e1ed8365992
     advertise-client-urls: http://$private_ipv4:2379,http://$private_ipv4:4001
     initial-advertise-peer-urls: http://$private_ipv4:2380
     listen-client-urls: http://0.0.0.0:2379,http://0.0.0.0:4001
@@ -36,3 +36,24 @@ coreos:
         [Service]
         Environment='DOCKER_OPTS=--insecure-registry="docker-registry:5000"'
     command: start
+  - name: mesos-slave.service
+    command: start
+    enable: true
+    content: |
+      [Unit]
+      Description=mesos slave
+      After=docker.service
+      Requires=docker.service
+
+      [Service]
+      TimeoutStartSec=0
+      ExecStartPre=-/usr/bin/docker kill mesos-slave
+      ExecStartPre=-/usr/bin/docker rm mesos-slave
+      ExecStart=/usr/bin/docker run \
+                        --net=host \
+                        -e "MESOS_MASTER=zk://172.17.8.101:2181/mesos" \
+                        -e "MESOS_LOG_DIR=/var/log/mesos" \
+                        -e "MESOS_LOGGING_LEVEL=INFO" \
+                        --name="mesos-slave" \
+                        docker-registry:5000/mesos-slave
+      ExecStop=/usr/bin/docker stop mesos-slave
