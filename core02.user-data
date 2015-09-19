@@ -3,7 +3,7 @@
 ---
 coreos:
   etcd2:
-    discovery: https://discovery.etcd.io/68f44a23eef0ddcdceab6e1ed8365992
+    discovery: https://discovery.etcd.io/38c508e30a7ebf3aa8f357dcd57d475f
     advertise-client-urls: http://$private_ipv4:2379,http://$private_ipv4:4001
     initial-advertise-peer-urls: http://$private_ipv4:2380
     listen-client-urls: http://0.0.0.0:2379,http://0.0.0.0:4001
@@ -15,6 +15,9 @@ coreos:
     command: start
   - name: fleet.service
     command: start
+  - name: update-engine.service
+    command: stop
+    mask: true
   - name: docker-tcp.socket
     command: start
     enable: true
@@ -50,10 +53,18 @@ coreos:
       ExecStartPre=-/usr/bin/docker kill mesos-slave
       ExecStartPre=-/usr/bin/docker rm mesos-slave
       ExecStart=/usr/bin/docker run \
-                        --net=host \
-                        -e "MESOS_MASTER=zk://172.17.8.101:2181/mesos" \
-                        -e "MESOS_LOG_DIR=/var/log/mesos" \
-                        -e "MESOS_LOGGING_LEVEL=INFO" \
-                        --name="mesos-slave" \
-                        docker-registry:5000/mesos-slave
+          --privileged=true \
+          --net=host \
+          -p 5051:5051 \
+          -e "MESOS_LOG_DIR=/var/log" \
+          -e "MESOS_MASTER=zk://172.17.8.101:2181/mesos" \
+          -e "MESOS_ISOLATOR=cgroups/cpu,cgroups/mem" \
+          -e "MESOS_CONTAINERIZERS=docker,mesos" \
+          -e "MESOS_EXECUTOR_REGISTRATION_TIMEOUT:5mins" \
+          -v /var/run/docker.sock:/var/run/docker.sock \
+          -v /usr/bin/docker:/usr/bin/docker \
+          -v /sys:/sys \
+          -v /cgroup:/cgroup \
+          -v /usr/lib/libdevmapper.so.1.02:/usr/lib/libdevmapper.so.1.02 \
+          docker-registry:5000/mesos-slave
       ExecStop=/usr/bin/docker stop mesos-slave
