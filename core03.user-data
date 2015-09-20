@@ -56,7 +56,8 @@ coreos:
           --privileged=true \
           --net=host \
           -p 5051:5051 \
-          -e "MESOS_LOG_DIR=/var/log" \
+          -e "MESOS_WORK_DIR=/tmp/mesos" \
+          -e "MESOS_LOG_DIR=/var/log/mesos" \
           -e "MESOS_MASTER=zk://172.17.8.101:2181/mesos" \
           -e "MESOS_ISOLATOR=cgroups/cpu,cgroups/mem" \
           -e "MESOS_CONTAINERIZERS=docker,mesos" \
@@ -66,5 +67,6 @@ coreos:
           -v /sys:/sys \
           -v /cgroup:/cgroup \
           -v /usr/lib/libdevmapper.so.1.02:/usr/lib/libdevmapper.so.1.02 \
+          --name="mesos-slave" \
           docker-registry:5000/mesos-slave
       ExecStop=/usr/bin/docker stop mesos-slave

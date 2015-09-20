@@ -67,7 +67,7 @@ coreos:
     enable: true
     content: |
       [Unit]
-      Description=Docker GitBucket - a github clone
+      Description=Docker GitBucket, a github clone
       After=docker.service docker-registry.service
       Requires=docker.service docker-registry.service
       Requires=gitbucket.mount
@@ -80,7 +80,7 @@ coreos:
       ExecStartPre=-/usr/bin/docker kill git-gitbucket
       ExecStartPre=-/usr/bin/docker rm git-gitbucket
       ExecStart=/usr/bin/docker run \
-                       -v /gitbucket-data:/gitbucket \
+                       -v /gitbucket:/gitbucket \
                        -p 29418:29418 \
                        -p 8080:8080 \
                        --name="git-gitbucket" \
@@ -92,8 +92,8 @@ coreos:
     content: |
       [Unit]
       Description=Jenkins
-      After=docker.service docker-registry.service
-      Requires=docker.service docker-registry.service
+      After=docker.service mesos-master.service
+      Requires=docker.service mesos-master.service
       Requires=jenkins.mount
 
       [Service]
@@ -116,8 +116,8 @@ coreos:
     content: |
       [Unit]
       Description=petclinic
-      After=docker.service docker-registry.service
-      Requires=docker.service docker-registry.service
+      After=docker.service mesos-master.service
+      Requires=docker.service mesos-master.service
 
       [Service]
       Restart=always
@@ -160,8 +160,8 @@ coreos:
     content: |
       [Unit]
       Description=mesos master
-      After=docker.service docker-registry.service
-      Requires=docker.service docker-registry.service
+      After=docker.service zookeeper.service
+      Requires=docker.service zookeeper.service
 
       [Service]
       Restart=always
@@ -189,8 +189,8 @@ coreos:
     content: |
       [Unit]
       Description=Selenium Hub 2.47.1
-      After=docker.service
-      Requires=docker.service
+      After=docker.service jenkins.service
+      Requires=docker.service jenkins.service
 
       [Service]
       TimeoutStartSec=0
@@ -208,7 +208,8 @@ coreos:
     content: |
       [Unit]
       Description=Selenium Node Chrome 2.47.1
-      After=selenium-hub.service
+      After=docker.service jenkins.service
+      Requires=docker.service jenkins.service
 
       [Service]
       TimeoutStartSec=0
@@ -220,3 +221,23 @@ coreos:
                        --name="node-chrome" \
                        docker-registry:5000/node-chrome:2.47.1
       ExecStop=/usr/bin/docker stop node-chrome
+  - name: chrome-debug.service
+    command: start
+    enable: true
+    content: |
+      [Unit]
+      Description=Selenium Node Chrome Debug 2.47.1
+      After=docker.service jenkins.service
+      Requires=docker.service jenkins.service
+
+      [Service]
+      TimeoutStartSec=0
+      ExecStartPre=-/usr/bin/docker pull docker-registry:5000/standalone-chrome-debug:2.47.1
+      ExecStartPre=-/usr/bin/docker kill chrome-debug
+      ExecStartPre=-/usr/bin/docker rm chrome-ebug
+      ExecStart=/usr/bin/docker run \
+                       -P \
+                       -p 4448:4444 \
+                       --name="chrome-debug" \
+                       docker-registry:5000/standalone-chrome-debug:2.47.1
+      ExecStop=/usr/bin/docker stop chrome-debug
