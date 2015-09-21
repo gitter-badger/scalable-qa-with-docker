@@ -67,6 +67,5 @@ coreos:
           -v /sys:/sys \
           -v /cgroup:/cgroup \
           -v /usr/lib/libdevmapper.so.1.02:/usr/lib/libdevmapper.so.1.02 \
-          --name="mesos-slave" \
           docker-registry:5000/mesos-slave
       ExecStop=/usr/bin/docker stop mesos-slave
