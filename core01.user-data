@@ -80,11 +80,19 @@ coreos:
       ExecStartPre=-/usr/bin/docker kill git-gitbucket
       ExecStartPre=-/usr/bin/docker rm git-gitbucket
       ExecStart=/usr/bin/docker run \
+<<<<<<< HEAD
                      -v /gitbucket:/var/gitbucket \
                      -p 29418:29418 \
                      -p 8080:8080 \
                      --name="git-gitbucket" \
                      docker-registry:5000/gitbucket
+=======
+                       -v /gitbucket:/var/gitbucket \
+                       -p 29418:29418 \
+                       -p 8080:8080 \
+                       --name="git-gitbucket" \
+                       docker-registry:5000/gitbucket
+>>>>>>> 24141c83155afee08bb72a97aaeb53d0ed0bd657
       ExecStop=/usr/bin/docker stop git-gitbucket
   - name: jenkins.service
     command: start
