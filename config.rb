@@ -2,7 +2,7 @@ require 'open-uri'
 require 'yaml'
 
 # Size of the CoreOS cluster created by Vagrant
-$num_instances=3
+$num_instances=2
 
 # coreos-vagrant is configured through a series of configuration
 # options (global ruby variables) which are detailed below. To modify
@@ -56,7 +56,7 @@ $expose_docker_tcp=2375
 
 # Setting for VirtualBox VMs
 $vb_gui = false
-$vb_memory = 2048
+$vb_memory = 3048
 $vb_cpus = 2
 
 # Enable port forwarding from guest(s) to host machine, syntax is: { 80 => 8080 }, auto correction is enabled by default.
