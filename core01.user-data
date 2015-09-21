@@ -208,8 +208,8 @@ coreos:
     content: |
       [Unit]
       Description=Selenium Node Chrome 2.47.1
-      After=docker.service jenkins.service
-      Requires=docker.service jenkins.service
+      After=docker.service selenium-hub.service
+      Requires=docker.service selenium-hub.service
 
       [Service]
       TimeoutStartSec=0
