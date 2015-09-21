@@ -80,7 +80,7 @@ coreos:
       ExecStartPre=-/usr/bin/docker kill git-gitbucket
       ExecStartPre=-/usr/bin/docker rm git-gitbucket
       ExecStart=/usr/bin/docker run \
-                       -v /gitbucket:/gitbucket \
+                       -v /gitbucket:/var/gitbucket \
                        -p 29418:29418 \
                        -p 8080:8080 \
                        --name="git-gitbucket" \
