@@ -49,6 +49,8 @@ coreos:
       Requires=docker.service
 
       [Service]
+      Restart=always
+      RestartSec=5
       TimeoutStartSec=0
       ExecStartPre=-/usr/bin/docker kill mesos-slave
       ExecStartPre=-/usr/bin/docker rm mesos-slave
