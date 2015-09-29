@@ -63,13 +63,13 @@ coreos:
                        registry:2.1.1
       ExecStop=/usr/bin/docker stop registry
   - name: gitbucket.service
-    command: start
+    command: stop
     enable: true
     content: |
       [Unit]
       Description=Docker GitBucket, a github clone
       After=docker.service docker-registry.service
-      Requires=docker.service docker-registry.service
+      Requires=docker.service
       Requires=gitbucket.mount
 
       [Service]
@@ -92,8 +92,8 @@ coreos:
     content: |
       [Unit]
       Description=Jenkins
-      After=docker.service docker-registry.service
-      Requires=docker.service docker-registry.service
+      After=docker.service gitbucket.service
+      Requires=docker.service
       Requires=jenkins.mount
 
       [Service]
@@ -111,13 +111,13 @@ coreos:
                        docker-registry:5000/jenkins
       ExecStop=/usr/bin/docker stop ci-jenkins
   - name: petclinic.service
-    command: start
+    command: stop
     enable: true
     content: |
       [Unit]
       Description=petclinic
-      After=docker.service docker-registry.service
-      Requires=docker.service docker-registry.service
+      After=docker.service jenkins.service
+      Requires=docker.service
 
       [Service]
       Restart=always
