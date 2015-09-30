@@ -3,28 +3,27 @@
 _This clusters is configured to use a significant amount of resources.
 Current set up allocates 6 CPU and 6 GB of memory._
 
-Prerequisites
+####Prerequisites
 
-- Download [data.zip](https://goo.gl/bmZhor) and unzip, place in root of project
+- Download [data.zip](https://goo.gl/bmZhor) and unzip, place in root of this project
 - [Vagrant](https://www.vagrantup.com/) + [VirtualBox](https://www.virtualbox.org/)
 
-Given:
+####Given:
 
     $ git clone https://github.com/xebia/scalable-qa-with-docker.git
     $ cd scalable-qa-with-docker
 
-Download https://goo.gl/bmZhor and unzip, place in root of project.
-
-When:
+####When:
 
     $ vagrant up
 
-Then:
+####Then:
 
-    start building!
+You have to start services yourself with ```systemd```, a utility baked into CoreOs designed to stop, start and manage processes defined in [unit files](https://coreos.com/docs/launching-containers/launching/getting-started-with-systemd/), for example let's start jenkins:
 
-It can take a while before services are started because docker is downloading images from the docker hub.
-Therefor you can follow the progress of services booting when logging on to a core, for example core-02.
+    $ sudo systemctl start jenkins
+
+You can follow the progress of services booting when logging on to a core, for example core-01:
 
     $ vagrant ssh core-01
     $ journalctl -u jenkins.service -f
@@ -46,7 +45,5 @@ _Once a sevice is started below links will point to your local instance of the r
 ### core-02
 
 - docker.service
-
-### core-03
-
-- docker.service
+- mesos-slave.service
+- chrome-debug.service - URL: [Chrome Debug](http://172.17.8.101:4448/grid/console)
