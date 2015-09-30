@@ -1,3 +1,5 @@
 .vagrant/
 log/
-data
+!data/jenkins/config.xml
+!data/jenkins/jobs/selenium-test/config.xml
+data/

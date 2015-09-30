@@ -183,6 +183,38 @@ coreos:
                         --name="mesos-master" \
                         docker-registry:5000/mesos-master
       ExecStop=/usr/bin/docker stop mesos-master
+  - name: mesos-slave.service
+    command: stop
+    enable: true
+    content: |
+      [Unit]
+      Description=mesos slave
+      After=docker.service
+      Requires=docker.service
+
+      [Service]
+      Restart=always
+      RestartSec=5
+      TimeoutStartSec=0
+      ExecStartPre=-/usr/bin/docker kill mesos-slave
+      ExecStartPre=-/usr/bin/docker rm mesos-slave
+      ExecStart=/usr/bin/docker run \
+          --privileged=true \
+          --net=host \
+          -p 5051:5051 \
+          -e "MESOS_WORK_DIR=/tmp/mesos" \
+          -e "MESOS_LOG_DIR=/var/log/mesos" \
+          -e "MESOS_MASTER=zk://172.17.8.101:2181/mesos" \
+          -e "MESOS_ISOLATOR=cgroups/cpu,cgroups/mem" \
+          -e "MESOS_CONTAINERIZERS=docker,mesos" \
+          -e "MESOS_EXECUTOR_REGISTRATION_TIMEOUT:5mins" \
+          -v /var/run/docker.sock:/var/run/docker.sock \
+          -v /usr/bin/docker:/usr/bin/docker \
+          -v /sys:/sys \
+          -v /cgroup:/cgroup \
+          -v /usr/lib/libdevmapper.so.1.02:/usr/lib/libdevmapper.so.1.02 \
+          docker-registry:5000/mesos-slave
+      ExecStop=/usr/bin/docker stop mesos-slave
   - name: selenium-hub.service
     command: stop
     enable: true

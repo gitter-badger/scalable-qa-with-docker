@@ -67,10 +67,13 @@ Vagrant.configure("2") do |config|
         config.vm.synced_folder "data/gitbucket/", "/gitbucket", id: "share-gitbucket", nfs: true, mount_options: ['nolock,vers=3,udp']
         config.vm.synced_folder "data/registry/", "/registry", id: "share-registry", nfs: true, mount_options: ['nolock,vers=3,udp']
         config.vm.synced_folder "data/jenkins/", "/jenkins", id: "share-jenkins", nfs: true, mount_options: ['nolock,vers=3,udp']
+        config.vm.provision :file, :source => "data/slave.jar", :destination => "/home/core/slave.jar"
         config.vm.provision :file, :source => "#{CLOUD_CONFIG_CORE01_PATH}", :destination => "/tmp/vagrantfile-user-data"
       elsif i == 2
+        config.vm.provision :file, :source => "data/slave.jar", :destination => "/home/core/slave.jar"
         config.vm.provision :file, :source => "#{CLOUD_CONFIG_CORE02_PATH}", :destination => "/tmp/vagrantfile-user-data"
       else
+        config.vm.provision :file, :source => "data/slave.jar", :destination => "/home/core/slave.jar"
         config.vm.provision :file, :source => "#{CLOUD_CONFIG_CORE03_PATH}", :destination => "/tmp/vagrantfile-user-data"
       end
 
