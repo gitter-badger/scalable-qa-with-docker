@@ -1,7 +1,7 @@
 # scalable-qa-with-docker
 
 _This clusters is configured to use a significant amount of resources.
-Current set up allocats 6 CPU and 6 GB of memory._
+Current set up allocates 6 CPU and 6 GB of memory._
 
 Prerequisites
 
