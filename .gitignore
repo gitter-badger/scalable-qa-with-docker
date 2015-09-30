@@ -1,3 +1,6 @@
 .vagrant/
 log/
 data
+!data/slave.jar
+!data/jenkins/.git-keep
+!data/gitbucket/.git-keep
