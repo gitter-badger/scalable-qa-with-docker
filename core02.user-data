@@ -99,8 +99,8 @@ coreos:
     content: |
       [Unit]
       Description=Selenium Node Chrome 2.47.1
-      After=docker.service selenium-hub.service
-      Requires=docker.service selenium-hub.service
+      After=docker.service
+      Requires=docker.service
 
       [Service]
       Restart=always
@@ -120,8 +120,8 @@ coreos:
     content: |
       [Unit]
       Description=Selenium Node Firefox 2.47.1
-      After=docker.service selenium-hub.service
-      Requires=docker.service selenium-hub.service
+      After=docker.service
+      Requires=docker.service
 
       [Service]
       Restart=always
