@@ -257,3 +257,24 @@ coreos:
                        --name="node-chrome" \
                        docker-registry:5000/node-chrome:2.47.1
       ExecStop=/usr/bin/docker stop node-chrome
+  - name: node-firefox.service
+    command: stop
+    enable: true
+    content: |
+      [Unit]
+      Description=Selenium Node Firefox 2.47.1
+      After=docker.service selenium-hub.service
+      Requires=docker.service selenium-hub.service
+
+      [Service]
+      Restart=always
+      RestartSec=5
+      TimeoutStartSec=0
+      ExecStartPre=-/usr/bin/docker pull docker-registry:5000/node-firefox:2.47.1
+      ExecStartPre=-/usr/bin/docker kill node-firefox
+      ExecStartPre=-/usr/bin/docker rm node-firefox
+      ExecStart=/usr/bin/docker run \
+                       --link selenium-hub:hub \
+                       --name="node-firefox" \
+                       docker-registry:5000/node-firefox:2.47.1
+      ExecStop=/usr/bin/docker stop node-firefox

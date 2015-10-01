@@ -24,10 +24,10 @@
       <description></description>
       <frameworkName>Jenkins Scheduler</frameworkName>
       <slavesUser>root</slavesUser>
-      <principal></principal>
+      <principal>jenkins</principal>
       <secret></secret>
       <checkpoint>false</checkpoint>
-      <onDemandRegistration>false</onDemandRegistration>
+      <onDemandRegistration>true</onDemandRegistration>
       <jenkinsURL>http://172.17.8.101:8181</jenkinsURL>
       <slaveInfos>
         <org.jenkinsci.plugins.mesos.MesosSlaveInfo>
@@ -37,12 +37,12 @@
           <maxExecutors>2</maxExecutors>
           <executorMem>128</executorMem>
           <remoteFSRoot>jenkins</remoteFSRoot>
-          <idleTerminationMinutes>3</idleTerminationMinutes>
+          <idleTerminationMinutes>1</idleTerminationMinutes>
           <jvmArgs>-Xms16m -XX:+UseConcMarkSweepGC -Djava.net.preferIPv4Stack=true</jvmArgs>
           <jnlpArgs></jnlpArgs>
           <containerInfo>
             <type>DOCKER</type>
-            <dockerImage>mjvdende/dkr-dev-java:latest</dockerImage>
+            <dockerImage>docker-registry:5000/standalone-chrome-debug:2.47.1</dockerImage>
             <volumes>
               <org.jenkinsci.plugins.mesos.MesosSlaveInfo_-Volume>
                 <containerPath>/mnt/mesos/sandbox/slave.jar</containerPath>
@@ -50,7 +50,8 @@
                 <readOnly>false</readOnly>
               </org.jenkinsci.plugins.mesos.MesosSlaveInfo_-Volume>
             </volumes>
-            <networking>BRIDGE</networking>
+            <networking>HOST</networking>
+            <portMappings class="empty-list"/>
             <useCustomDockerCommandShell>false</useCustomDockerCommandShell>
             <customDockerCommandShell></customDockerCommandShell>
             <dockerPrivilegedMode>false</dockerPrivilegedMode>
