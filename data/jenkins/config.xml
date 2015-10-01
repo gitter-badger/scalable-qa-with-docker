@@ -60,6 +60,35 @@
           <mode>NORMAL</mode>
           <labelString>chrome-debug</labelString>
         </org.jenkinsci.plugins.mesos.MesosSlaveInfo>
+        <org.jenkinsci.plugins.mesos.MesosSlaveInfo>
+          <slaveCpus>0.1</slaveCpus>
+          <slaveMem>512</slaveMem>
+          <executorCpus>0.1</executorCpus>
+          <maxExecutors>2</maxExecutors>
+          <executorMem>128</executorMem>
+          <remoteFSRoot>jenkins</remoteFSRoot>
+          <idleTerminationMinutes>3</idleTerminationMinutes>
+          <jvmArgs>-Xms16m -XX:+UseConcMarkSweepGC -Djava.net.preferIPv4Stack=true</jvmArgs>
+          <jnlpArgs></jnlpArgs>
+          <containerInfo>
+            <type>DOCKER</type>
+            <dockerImage>docker-registry:5000/node-chrome-dev</dockerImage>
+            <volumes>
+              <org.jenkinsci.plugins.mesos.MesosSlaveInfo_-Volume>
+                <containerPath>/mnt/mesos/sandbox/slave.jar</containerPath>
+                <hostPath>/home/tester/slave.jar</hostPath>
+                <readOnly>false</readOnly>
+              </org.jenkinsci.plugins.mesos.MesosSlaveInfo_-Volume>
+            </volumes>
+            <networking>BRIDGE</networking>
+            <useCustomDockerCommandShell>false</useCustomDockerCommandShell>
+            <customDockerCommandShell></customDockerCommandShell>
+            <dockerPrivilegedMode>false</dockerPrivilegedMode>
+            <dockerForcePullImage>false</dockerForcePullImage>
+          </containerInfo>
+          <mode>NORMAL</mode>
+          <labelString>node-chrome-dev</labelString>
+        </org.jenkinsci.plugins.mesos.MesosSlaveInfo>
       </slaveInfos>
     </org.jenkinsci.plugins.mesos.MesosCloud>
   </clouds>
