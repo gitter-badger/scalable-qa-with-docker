@@ -110,7 +110,10 @@ coreos:
       ExecStartPre=-/usr/bin/docker kill node-chrome
       ExecStartPre=-/usr/bin/docker rm node-chrome
       ExecStart=/usr/bin/docker run \
-                       --link selenium-hub:hub \
+                       -p 5555:5555 \
+                       -e HUB_PORT_4444_TCP_ADDR=172.17.8.101 \
+                       -e HUB_PORT_4444_TCP_PORT=4444 \
+                       -e REMOTE_HOST=http://172.17.8.102:5555 \
                        --name="node-chrome" \
                        docker-registry:5000/node-chrome:2.47.1
       ExecStop=/usr/bin/docker stop node-chrome
@@ -131,7 +134,10 @@ coreos:
       ExecStartPre=-/usr/bin/docker kill node-firefox
       ExecStartPre=-/usr/bin/docker rm node-firefox
       ExecStart=/usr/bin/docker run \
-                       --link selenium-hub:hub \
+                       -p 5555:5556 \
+                       -e HUB_PORT_4444_TCP_ADDR=172.17.8.101 \
+                       -e HUB_PORT_4444_TCP_PORT=4444 \
+                       -e REMOTE_HOST=http://172.17.8.102:5556 \
                        --name="node-firefox" \
                        docker-registry:5000/node-firefox:2.47.1
       ExecStop=/usr/bin/docker stop node-firefox

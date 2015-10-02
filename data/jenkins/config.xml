@@ -72,11 +72,11 @@
           <jnlpArgs></jnlpArgs>
           <containerInfo>
             <type>DOCKER</type>
-            <dockerImage>docker-registry:5000/node-chrome-dev</dockerImage>
+            <dockerImage>docker-registry:5000/node-chrome-dev:2.0</dockerImage>
             <volumes>
               <org.jenkinsci.plugins.mesos.MesosSlaveInfo_-Volume>
                 <containerPath>/mnt/mesos/sandbox/slave.jar</containerPath>
-                <hostPath>/home/tester/slave.jar</hostPath>
+                <hostPath>/home/core/slave.jar</hostPath>
                 <readOnly>false</readOnly>
               </org.jenkinsci.plugins.mesos.MesosSlaveInfo_-Volume>
             </volumes>
