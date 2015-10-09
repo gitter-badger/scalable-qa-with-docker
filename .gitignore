@@ -1,10 +1,10 @@
 .vagrant/
 log/
 !data/jenkins/config.xml
+!data/jenkins/jobs/mesos/config.xml
+!data/jenkins/jobs/selenium-job/config.xml
+!data/jenkins/jobs/selenium-hub/config.xml
 !data/jenkins/jobs/suite-demo/config.xml
 !data/jenkins/jobs/suite-todo/config.xml
-!data/jenkins/jobs/kickoff/config.xml
-!data/jenkins/jobs/selenium-hub/config.xml
-!data/jenkins/jobs/selenium-test/config.xml
 !data/slave.jar
 data/

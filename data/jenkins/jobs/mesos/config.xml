@@ -18,14 +18,14 @@
     </userRemoteConfigs>
     <branches>
       <hudson.plugins.git.BranchSpec>
-        <name>*/4-more-cores</name>
+        <name>*/5-mesos</name>
       </hudson.plugins.git.BranchSpec>
     </branches>
     <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
     <submoduleCfg class="list"/>
     <extensions/>
   </scm>
-  <assignedNode>mac</assignedNode>
+  <assignedNode>node-chrome-dev</assignedNode>
   <canRoam>false</canRoam>
   <disabled>false</disabled>
   <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
@@ -34,7 +34,8 @@
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
-      <command>protractor todo-conf.js</command>
+      <command>xvfb-run --server-args=&quot;$DISPLAY -screen 0 1360x1020x24 -ac +extension RANDR&quot; \
+protractor conf.js</command>
     </hudson.tasks.Shell>
   </builders>
   <publishers/>

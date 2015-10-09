@@ -25,35 +25,18 @@
     <submoduleCfg class="list"/>
     <extensions/>
   </scm>
-  <assignedNode>node-chrome-dev</assignedNode>
+  <assignedNode>mac</assignedNode>
   <canRoam>false</canRoam>
   <disabled>false</disabled>
   <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
   <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
-  <triggers>
-    <jenkins.triggers.ReverseBuildTrigger>
-      <spec></spec>
-      <upstreamProjects>kickoff, </upstreamProjects>
-      <threshold>
-        <name>SUCCESS</name>
-        <ordinal>0</ordinal>
-        <color>BLUE</color>
-        <completeBuild>true</completeBuild>
-      </threshold>
-    </jenkins.triggers.ReverseBuildTrigger>
-  </triggers>
+  <triggers/>
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
       <command>protractor demo-conf.js</command>
     </hudson.tasks.Shell>
   </builders>
-  <publishers>
-    <hudson.tasks.junit.JUnitResultArchiver plugin="junit@1.9">
-      <testResults>*.xml</testResults>
-      <keepLongStdio>false</keepLongStdio>
-      <healthScaleFactor>1.0</healthScaleFactor>
-    </hudson.tasks.junit.JUnitResultArchiver>
-  </publishers>
+  <publishers/>
   <buildWrappers/>
 </project>
