@@ -5,7 +5,7 @@ Current set up allocates 6 CPU and 6 GB of memory._
 
 ####Prerequisites
 
-- Download [data.zip](https://bit.ly/tw-scale-data) and unzip, place in root of this project
+- Download [data-online.zip](http://bit.ly/scale-data-online) and unzip, place in root of this project
 - [Vagrant](https://www.vagrantup.com/) + [VirtualBox](https://www.virtualbox.org/)
 
 ####Given:
