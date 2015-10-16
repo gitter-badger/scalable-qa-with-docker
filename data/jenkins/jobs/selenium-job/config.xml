@@ -34,7 +34,8 @@
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
-      <command>protractor conf.js</command>
+      <command>xvfb-run --server-args=&quot;$DISPLAY -screen 0 1360x1020x24 -ac +extension RANDR&quot; \
+protractor conf.js</command>
     </hudson.tasks.Shell>
   </builders>
   <publishers>
