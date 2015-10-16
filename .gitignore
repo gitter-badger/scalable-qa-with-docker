@@ -3,6 +3,7 @@ log/
 data
 !data/slave.jar
 !data/gitbucket/.git-keep
+!data/jenkins/credentials.xml
 !data/jenkins/config.xml
 !data/jenkins/jobs/mesos/config.xml
 !data/jenkins/jobs/selenium-job/config.xml

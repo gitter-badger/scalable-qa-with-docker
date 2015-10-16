@@ -45,11 +45,10 @@ coreos:
       Restart=always
       RestartSec=5
       TimeoutStartSec=0
-      ExecStartPre=-/usr/bin/docker pull garland/mesosphere-docker-mesos-master
+      ExecStartPre=-/usr/bin/docker pull mjvdende/jenkins-mesos-slave
       ExecStartPre=-/usr/bin/docker kill mesos-slave
       ExecStartPre=-/usr/bin/docker rm mesos-slave
       ExecStart=/usr/bin/docker run \
-          --entrypoint=mesos-slave \
           --privileged=true \
           --net=host \
           -p 5051:5051 \
@@ -65,7 +64,7 @@ coreos:
           -v /cgroup:/cgroup \
           -v /usr/lib/libdevmapper.so.1.02:/usr/lib/libdevmapper.so.1.02 \
           --name="mesos-slave" \
-          garland/mesosphere-docker-mesos-master
+          mjvdende/jenkins-mesos-slave
       ExecStop=/usr/bin/docker stop mesos-slave
   - name: chrome-debug.service
     command: stop
