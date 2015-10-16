@@ -56,6 +56,7 @@ coreos:
       ExecStartPre=-/usr/bin/docker kill mesos-slave
       ExecStartPre=-/usr/bin/docker rm mesos-slave
       ExecStart=/usr/bin/docker run \
+          --entrypoint=mesos-slave \
           --privileged=true \
           --net=host \
           -p 5051:5051 \
