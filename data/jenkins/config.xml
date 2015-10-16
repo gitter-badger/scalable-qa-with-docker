@@ -42,7 +42,7 @@
           <jnlpArgs></jnlpArgs>
           <containerInfo>
             <type>DOCKER</type>
-            <dockerImage>mjvdende/node-chrome</dockerImage>
+            <dockerImage>mjvdende/node-chrome-protractor</dockerImage>
             <volumes>
               <org.jenkinsci.plugins.mesos.MesosSlaveInfo_-Volume>
                 <containerPath>/mnt/mesos/sandbox/slave.jar</containerPath>
