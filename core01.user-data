@@ -70,7 +70,7 @@ coreos:
       Restart=always
       RestartSec=5
       TimeoutStartSec=0
-      ExecStartPre=-/usr/bin/docker pull jenkins:1.609.3
+      ExecStartPre=-/usr/bin/docker pull mjvdende/jenkins-protractor-chrome
       ExecStartPre=-/usr/bin/docker kill ci-jenkins
       ExecStartPre=-/usr/bin/docker rm ci-jenkins
       ExecStart=/usr/bin/docker run \
@@ -78,7 +78,7 @@ coreos:
                        -p 50000:50000 \
                        -v /jenkins:/var/jenkins_home \
                        --name="ci-jenkins" \
-                       jenkins:1.609.3
+                       mjvdende/jenkins-protractor-chrome
       ExecStop=/usr/bin/docker stop ci-jenkins
   - name: petclinic.service
     command: stop
@@ -170,6 +170,7 @@ coreos:
       ExecStartPre=-/usr/bin/docker kill mesos-slave
       ExecStartPre=-/usr/bin/docker rm mesos-slave
       ExecStart=/usr/bin/docker run \
+          --entrypoint=mesos-slave \
           --privileged=true \
           --net=host \
           -p 5051:5051 \
@@ -194,7 +195,7 @@ coreos:
       [Unit]
       Description=Selenium Hub 2.47.1
       After=docker.service
-      Requires=docker.service 
+      Requires=docker.service
 
       [Service]
       Restart=always

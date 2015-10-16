@@ -2,6 +2,12 @@
 <project>
   <actions/>
   <description></description>
+  <logRotator class="hudson.tasks.LogRotator">
+    <daysToKeep>-1</daysToKeep>
+    <numToKeep>2</numToKeep>
+    <artifactDaysToKeep>-1</artifactDaysToKeep>
+    <artifactNumToKeep>-1</artifactNumToKeep>
+  </logRotator>
   <keepDependencies>false</keepDependencies>
   <properties>
     <org.jenkinsci.plugins.gitbucket.GitBucketProjectProperty plugin="gitbucket@0.8">
@@ -13,7 +19,6 @@
     <userRemoteConfigs>
       <hudson.plugins.git.UserRemoteConfig>
         <url>http://172.17.8.101:8080/git/root/protractor-browsers-drivers.git</url>
-        <credentialsId>a657b94e-7179-4e0f-b7a1-7e51c94e8917</credentialsId>
       </hudson.plugins.git.UserRemoteConfig>
     </userRemoteConfigs>
     <branches>
@@ -25,7 +30,7 @@
     <submoduleCfg class="list"/>
     <extensions/>
   </scm>
-  <assignedNode>mac</assignedNode>
+  <assignedNode>master</assignedNode>
   <canRoam>false</canRoam>
   <disabled>false</disabled>
   <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
@@ -34,7 +39,8 @@
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
-      <command>protractor conf.js</command>
+      <command>xvfb-run --server-args=&quot;$DISPLAY -screen 0 1360x1020x24 -ac +extension RANDR&quot; \
+protractor conf.js</command>
     </hudson.tasks.Shell>
   </builders>
   <publishers>

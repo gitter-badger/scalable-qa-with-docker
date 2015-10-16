@@ -102,7 +102,7 @@ coreos:
       Restart=always
       RestartSec=5
       TimeoutStartSec=0
-      ExecStartPre=-/usr/bin/docker pull mjvdende/node-chrome:2.47.1
+      ExecStartPre=-/usr/bin/docker pull selenium/node-chrome:2.47.1
       ExecStartPre=-/usr/bin/docker kill node-chrome
       ExecStartPre=-/usr/bin/docker rm node-chrome
       ExecStart=/usr/bin/docker run \
@@ -111,7 +111,7 @@ coreos:
                        -e HUB_PORT_4444_TCP_PORT=4444 \
                        -e REMOTE_HOST=http://172.17.8.102:5555 \
                        --name="node-chrome" \
-                       mjvdende/node-chrome:2.47.1
+                       selenium/node-chrome:2.47.1
       ExecStop=/usr/bin/docker stop node-chrome
   - name: node-firefox.service
     command: stop
