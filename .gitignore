@@ -1,6 +1,7 @@
 .vagrant/
 log/
 !data/jenkins/config.xml
+!data/jenkins/credentials.xml
 !data/jenkins/jobs/mesos/config.xml
 !data/jenkins/jobs/selenium-job/config.xml
 !data/jenkins/jobs/selenium-hub/config.xml
