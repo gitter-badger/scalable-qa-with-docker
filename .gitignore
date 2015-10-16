@@ -2,5 +2,11 @@
 log/
 data
 !data/slave.jar
-!data/jenkins/.git-keep
 !data/gitbucket/.git-keep
+!data/jenkins/config.xml
+!data/jenkins/jobs/mesos/config.xml
+!data/jenkins/jobs/selenium-job/config.xml
+!data/jenkins/jobs/selenium-hub/config.xml
+!data/jenkins/jobs/suite-demo/config.xml
+!data/jenkins/jobs/suite-todo/config.xml
+!data/slave.jar
