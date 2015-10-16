@@ -63,7 +63,6 @@ coreos:
           -v /sys:/sys \
           -v /cgroup:/cgroup \
           -v /usr/lib/libdevmapper.so.1.02:/usr/lib/libdevmapper.so.1.02 \
-          --name="mesos-slave" \
           mjvdende/jenkins-mesos-slave
       ExecStop=/usr/bin/docker stop mesos-slave
   - name: chrome-debug.service
