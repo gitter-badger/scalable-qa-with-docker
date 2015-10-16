@@ -38,7 +38,7 @@ coreos:
     content: |
       [Unit]
       Description=Docker GitBucket, a github clone
-      After=docker.service docker-registry.service
+      After=docker.service
       Requires=docker.service
       Requires=gitbucket.mount
 
@@ -107,8 +107,8 @@ coreos:
     content: |
       [Unit]
       Description=zookeeper
-      After=docker.service docker-registry.service
-      Requires=docker.service docker-registry.service
+      After=docker.service
+      Requires=docker.service
 
       [Service]
       Restart=always
@@ -193,8 +193,8 @@ coreos:
     content: |
       [Unit]
       Description=Selenium Hub 2.47.1
-      After=docker.service docker-registry.service
-      Requires=docker.service docker-registry.service
+      After=docker.service
+      Requires=docker.service 
 
       [Service]
       Restart=always
@@ -242,11 +242,11 @@ coreos:
       Restart=always
       RestartSec=5
       TimeoutStartSec=0
-      ExecStartPre=-/usr/bin/docker pull docker-registry:5000/node-firefox:2.47.1
+      ExecStartPre=-/usr/bin/docker pull selenium/node-firefox:2.47.1
       ExecStartPre=-/usr/bin/docker kill node-firefox
       ExecStartPre=-/usr/bin/docker rm node-firefox
       ExecStart=/usr/bin/docker run \
                        --link selenium-hub:hub \
                        --name="node-firefox" \
-                       docker-registry:5000/node-firefox:2.47.1
+                       selenium/node-firefox:2.47.1
       ExecStop=/usr/bin/docker stop node-firefox
