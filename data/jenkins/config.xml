@@ -16,52 +16,6 @@
   <jdks/>
   <viewsTabBar class="hudson.views.DefaultViewsTabBar"/>
   <myViewsTabBar class="hudson.views.DefaultMyViewsTabBar"/>
-  <clouds>
-    <org.jenkinsci.plugins.mesos.MesosCloud plugin="mesos@0.8.0">
-      <name>MesosCloud</name>
-      <nativeLibraryPath>/var/jenkins_home/mesos/libmesos-0.21.1.so</nativeLibraryPath>
-      <master>172.17.8.101:5050</master>
-      <description></description>
-      <frameworkName>Jenkins Scheduler</frameworkName>
-      <slavesUser>root</slavesUser>
-      <principal>jenkins</principal>
-      <secret></secret>
-      <checkpoint>false</checkpoint>
-      <onDemandRegistration>true</onDemandRegistration>
-      <jenkinsURL>http://172.17.8.101:8181</jenkinsURL>
-      <slaveInfos>
-        <org.jenkinsci.plugins.mesos.MesosSlaveInfo>
-          <slaveCpus>0.1</slaveCpus>
-          <slaveMem>512</slaveMem>
-          <executorCpus>0.1</executorCpus>
-          <maxExecutors>2</maxExecutors>
-          <executorMem>128</executorMem>
-          <remoteFSRoot>jenkins</remoteFSRoot>
-          <idleTerminationMinutes>3</idleTerminationMinutes>
-          <jvmArgs>-Xms16m -XX:+UseConcMarkSweepGC -Djava.net.preferIPv4Stack=true</jvmArgs>
-          <jnlpArgs></jnlpArgs>
-          <containerInfo>
-            <type>DOCKER</type>
-            <dockerImage>mjvdende/node-chrome-protractor</dockerImage>
-            <volumes>
-              <org.jenkinsci.plugins.mesos.MesosSlaveInfo_-Volume>
-                <containerPath>/mnt/mesos/sandbox/slave.jar</containerPath>
-                <hostPath>/home/core/slave.jar</hostPath>
-                <readOnly>false</readOnly>
-              </org.jenkinsci.plugins.mesos.MesosSlaveInfo_-Volume>
-            </volumes>
-            <networking>BRIDGE</networking>
-            <useCustomDockerCommandShell>false</useCustomDockerCommandShell>
-            <customDockerCommandShell></customDockerCommandShell>
-            <dockerPrivilegedMode>false</dockerPrivilegedMode>
-            <dockerForcePullImage>false</dockerForcePullImage>
-          </containerInfo>
-          <mode>NORMAL</mode>
-          <labelString>mesos-chrome</labelString>
-        </org.jenkinsci.plugins.mesos.MesosSlaveInfo>
-      </slaveInfos>
-    </org.jenkinsci.plugins.mesos.MesosCloud>
-  </clouds>
   <quietPeriod>5</quietPeriod>
   <scmCheckoutRetryCount>0</scmCheckoutRetryCount>
   <views>
