@@ -134,7 +134,7 @@ coreos:
       ExecStartPre=-/usr/bin/docker kill node-firefox
       ExecStartPre=-/usr/bin/docker rm node-firefox
       ExecStart=/usr/bin/docker run \
-                       -p 5555:5556 \
+                       -p 5556:5555 \
                        -e HUB_PORT_4444_TCP_ADDR=172.17.8.101 \
                        -e HUB_PORT_4444_TCP_PORT=4444 \
                        -e REMOTE_HOST=http://172.17.8.102:5556 \
