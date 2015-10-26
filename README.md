@@ -1,5 +1,7 @@
 # scalable-qa-with-docker
 
+[![Join the chat at https://gitter.im/xebia/scalable-qa-with-docker](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/xebia/scalable-qa-with-docker?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 _This clusters is configured to use a significant amount of resources.
 Current set up allocates 6 CPU and 6 GB of memory._
 
